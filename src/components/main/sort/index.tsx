@@ -1,16 +1,13 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { SortDirection } from "../../../store/states/sortDirection";
+import { updateFilter } from "../../../store/actions";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { SortDirection } from "../../../types/sortDirection";
 import RadioDefaultIcon from "../../../styles/icons/radioDefault";
-import RadioSelectedtIcon from "../../../styles/icons/radioSelected";
+import RadioSelectedIcon from "../../../styles/icons/radioSelected";
 
 type SortingOption = {
   key: SortDirection;
   text: string;
-};
-
-type Props = {
-  direction: SortDirection;
 };
 
 const sortingOptions: SortingOption[] = [
@@ -20,11 +17,14 @@ const sortingOptions: SortingOption[] = [
   { key: SortDirection.DATE_DESCENDING, text: "New to old" },
 ];
 
-const Sort = ({ direction }: Props) => {
-  const [selected, setSelected] = useState(direction);
+const Sort = () => {
+  const sortState = useAppSelector((state) => state.market.filter.sortBy);
+  const dispatch = useAppDispatch();
+  const onSortChanged = (direction: SortDirection) =>
+    dispatch(updateFilter({ sortBy: direction }));
   const sortingItems = sortingOptions.map((option) => (
-    <SortingListItem key={option.key} onClick={() => setSelected(option.key)}>
-      {selected === option.key ? <RadioSelectedtIcon /> : <RadioDefaultIcon />}
+    <SortingListItem key={option.key} onClick={() => onSortChanged(option.key)}>
+      {sortState === option.key ? <RadioSelectedIcon /> : <RadioDefaultIcon />}
       <span>{option.text}</span>
     </SortingListItem>
   ));

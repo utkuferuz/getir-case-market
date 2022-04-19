@@ -1,14 +1,23 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { onFilterChanged, updateProducts } from "../actions";
-import { AppState } from "../states/appState";
-import { SortDirection } from "../states/sortDirection";
-import { Status } from "../states/status";
+import {
+  updateBrands,
+  updateBrandsInd,
+  updateFilter,
+  updateProducts,
+  updateProductTypes,
+  updateTags,
+  updateTagsInd,
+} from "../actions";
+import { Market } from "../states/market";
+import { SortDirection } from "../../types/sortDirection";
+import { Status } from "../../types/status";
+import { ProductType } from "../../types/productType";
 
-const initialState: AppState = {
+const initialState: Market = {
   data: [],
   status: Status.Pending,
-  filters: {
-    productType: "mug",
+  filter: {
+    productType: ProductType.MUG,
     brands: [],
     tags: [],
     sortBy: SortDirection.PRICE_ASCENDING,
@@ -32,25 +41,41 @@ const initialState: AppState = {
   productCount: 0,
 };
 
-const productsReducer = createReducer(initialState, (builder) => {
+const marketReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(onFilterChanged, (state, action) => {
-      state.filters = {
-        ...state.filters,
+    .addCase(updateFilter, (state, action) => {
+      state.filter = {
+        ...state.filter,
         ...action.payload,
       };
     })
     .addCase(updateProducts, (state, action) => {
       state.data = action.payload;
+    })
+    .addCase(updateTags, (state, action) => {
+      state.tags.data = action.payload;
+    })
+    .addCase(updateTagsInd, (state, action) => {
+      state.tags.status = action.payload;
+    })
+    .addCase(updateBrands, (state, action) => {
+      state.brands.data = action.payload;
+    })
+    .addCase(updateBrandsInd, (state, action) => {
+      state.brands.status = action.payload;
     });
 });
 
-const products = {
-  reducer: productsReducer,
+const market = {
+  reducer: marketReducer,
   actions: {
-    onFilterChanged,
+    updateFilter,
     updateProducts,
+    updateTags,
+    updateTagsInd,
+    updateBrands,
+    updateBrandsInd,
   },
 };
 
-export default products;
+export default market;

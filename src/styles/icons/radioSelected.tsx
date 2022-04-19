@@ -1,6 +1,6 @@
 import { theme } from "../variables";
 
-const RadioSelectedIcon = () => {
+const RadioSelected = () => {
   return (
     <svg
       width="22"
@@ -30,4 +30,4 @@ const RadioSelectedIcon = () => {
   );
 };
 
-export default RadioSelectedIcon;
+export default RadioSelected;

@@ -1,4 +1,4 @@
-const RadioDefaultIcon = () => {
+const RadioDefault = () => {
   return (
     <svg
       width="22"
@@ -21,4 +21,4 @@ const RadioDefaultIcon = () => {
   );
 };
 
-export default RadioDefaultIcon;
+export default RadioDefault;

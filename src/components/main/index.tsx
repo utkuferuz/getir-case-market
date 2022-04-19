@@ -1,17 +1,23 @@
 import styled from "styled-components";
-import { SortDirection } from "../../store/states/sortDirection";
 import { theme } from "../../styles/variables";
 import Container from "../shared/container";
+import Filter from "./filter";
 import Sort from "./sort";
 
 const Main = () => {
-  const defaultSort = SortDirection.PRICE_ASCENDING;
-
   return (
     <MainWrapper>
-      <Container>
+      <Container className="main-container">
         <SideWrapper>
-          <Sort direction={defaultSort}></Sort>
+          <Sort />
+          <Filter
+            type="brands"
+            defaultOptions={[{ id: "all", name: "All" }]}
+          ></Filter>
+          <Filter
+            type="tags"
+            defaultOptions={[{ id: "all", name: "All" }]}
+          ></Filter>
         </SideWrapper>
       </Container>
     </MainWrapper>
