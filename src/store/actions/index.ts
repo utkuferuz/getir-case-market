@@ -1,12 +1,11 @@
 import { createAction } from "@reduxjs/toolkit";
 import { FilterItem } from "../../components/main/filter/types";
-import { Filter } from "../states/filter";
+import { FilterState } from "../states/filter";
 
 import { Product } from "../../types/product";
 import { Status } from "../../types/status";
 
 const UPDATE_FILTER = "product/update_filter";
-const ON_PRODUCT_LIST_LOADED = "product/on_product_list_loaded";
 
 const UPDATE_TAGS = "product/update_tags";
 const UPDATE_TAGS_IND = "product/update_tags_ind";
@@ -22,8 +21,7 @@ const UPDATE_PRODUCTS_IND = "product/update_products_ind";
 
 const UPDATE_CART_ITEMS = "product/update_cart_items";
 
-export const updateFilter = createAction<Filter>(UPDATE_FILTER);
-export const onProductListLoaded = createAction<Filter>(ON_PRODUCT_LIST_LOADED);
+export const updateFilter = createAction<FilterState>(UPDATE_FILTER);
 
 /* Tags */
 export const updateTags = createAction<FilterItem[]>(UPDATE_TAGS);
@@ -34,7 +32,8 @@ export const updateBrands = createAction<FilterItem[]>(UPDATE_BRANDS);
 export const updateBrandsInd = createAction<Status>(UPDATE_BRANDS_IND);
 
 /* Product Types */
-export const updateProductTypes = createAction<string[]>(UPDATE_PRODUCT_TYPES);
+export const updateProductTypes =
+  createAction<FilterItem[]>(UPDATE_PRODUCT_TYPES);
 export const updateProductTypesInd = createAction<Status>(
   UPDATE_PRODUCT_TYPES_IND
 );

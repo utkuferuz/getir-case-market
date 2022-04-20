@@ -63,6 +63,9 @@ const marketReducer = createReducer(initialState, (builder) => {
     })
     .addCase(updateBrandsInd, (state, action) => {
       state.brands.status = action.payload;
+    })
+    .addCase(updateProductTypes, (state, action) => {
+      state.productTypes.data = action.payload;
     });
 });
 

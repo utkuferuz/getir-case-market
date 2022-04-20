@@ -6,7 +6,9 @@ const Container = styled.div`
   grid-template-columns: repeat(12, 1fr);
   justify-content: center;
   height: 100%;
-  gap: 16px;
+  @media (min-width: ${theme.breakpoints.MD}) {
+    gap: 16px;
+  }
   @media (min-width: ${theme.breakpoints.XL}) {
     grid-template-columns: repeat(12, 88px);
   }

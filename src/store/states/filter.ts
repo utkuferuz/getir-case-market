@@ -1,7 +1,7 @@
 import { FilterItem } from "../../components/main/filter/types";
 import { SortDirection } from "../../types/sortDirection";
 
-export interface Filter {
+export interface FilterState {
   productType?: string;
   brands?: FilterItem[];
   tags?: FilterItem[];
