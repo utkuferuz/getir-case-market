@@ -8,9 +8,12 @@ export const httpHelper = {
       ...options.headers,
     };
     const res = await fetch(url, {
-      body: body ? JSON.stringify(body) : undefined,
+      body: body ? {} : undefined,
       ...options,
     });
+    if (options?.fullResponse) {
+      return res;
+    }
     return res.json();
   },
 };

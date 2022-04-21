@@ -1,36 +1,37 @@
 import styled from "styled-components";
+import { addCartItem, removeCartItem } from "../../../../store/actions";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { Cart } from "../../../../store/states/cart";
 import { theme } from "../../../../styles/variables";
+import { Product } from "../../../../types/product";
 
 type Props = {
-  slug: string;
-  name: string;
-  price: number;
-  isAdded: boolean;
-  imageUrl: string;
+  product: Product;
 };
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat("tr", {
+const ProductItem = ({ product }: Props) => {
+  const localizedPrice = new Intl.NumberFormat("tr", {
     maximumFractionDigits: 2,
-  }).format(price);
-};
-
-const ProductItem = ({ slug, name, price, isAdded, imageUrl }: Props) => {
-  const localizedPrice = formatPrice(price);
-  const removeItem = () => {};
-  const addItem = () => {};
+  }).format(product.price);
+  const dispatch = useAppDispatch();
+  const cartState = useAppSelector<Cart>((s) => s.market.cart);
+  const isAdded = cartState.items.some((i) => i.item.slug === product.slug);
   return (
     <ProductContainer>
       <Image>
-        <img src="https://picsum.photos/200" alt={name} />
+        <img src={product.image} alt={product.name} />
       </Image>
       <Price>
         <span>₺</span> <span>{localizedPrice}</span>
       </Price>
-      <Name>{name}</Name>
+      <Name>{product.name}</Name>
       <Button
         className={isAdded ? "existing-item" : ""}
-        onClick={() => (isAdded ? removeItem() : addItem())}
+        onClick={() =>
+          isAdded
+            ? dispatch(removeCartItem(product))
+            : dispatch(addCartItem(product))
+        }
       >
         {isAdded ? "Remove" : "Add"}
       </Button>
@@ -52,9 +53,8 @@ const Image = styled.figure`
   border-radius: 12px;
   background-color: #fefefe;
   padding: 16px;
-  border: 1.18px solid #f3f0fe;
+  border: 1px solid #f3f0fe;
   img {
-    object-fit: cover;
     width: 100%;
     height: 100%;
   }
@@ -79,7 +79,6 @@ const Name = styled.div`
 `;
 
 const Button = styled.button`
-  appearance: none;
   border: none;
   background: none;
   border-radius: 2px;
@@ -93,7 +92,7 @@ const Button = styled.button`
   height: max-content;
   align-self: end;
   &.existing-item {
-    background-color: #5d3ebc;
+    background-color: #6d5edd;
   }
 `;
 

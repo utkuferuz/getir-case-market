@@ -1,14 +1,21 @@
 import styled from "styled-components";
+import { useAppSelector } from "../../../store/hooks";
 import BasketIcon from "../../../styles/icons/basket";
 import { theme } from "../../../styles/variables";
 
 const Basket = () => {
-  const totalPrice = "1400.00";
-
+  const cartState = useAppSelector((s) => s.market.cart);
+  const total = cartState.items.reduce(
+    (total, current) => total + current.item.price * current.count,
+    0
+  );
+  const totalText = new Intl.NumberFormat("tr", {
+    maximumFractionDigits: 2,
+  }).format(total);
   return (
     <BasketWrapper>
       <BasketIcon />
-      <Price>₺ {totalPrice}</Price>
+      <Price>₺ {totalText}</Price>
     </BasketWrapper>
   );
 };

@@ -7,6 +7,7 @@ import { theme } from "../../styles/variables";
 import { Product } from "../../types/product";
 import Filter from "./filter";
 import { FilterItem } from "./filter/types";
+import Pagination from "./products/pagination";
 import ProductItem from "./products/product";
 import ProductTypes from "./products/types";
 import Sort from "./sort";
@@ -21,7 +22,12 @@ const prepareQueryFilter = (filterState: FilterState) => {
   return [
     { key: "_sort", value: sort },
     { key: "_order", value: order },
-    { key: "_start", value: filterState.pagination?.index },
+    {
+      key: "_start",
+      value:
+        (filterState.pagination?.index || 0) *
+        (filterState.pagination?.items || 16),
+    },
     { key: "_limit", value: filterState.pagination?.items },
     { key: "itemType_like", value: filterState.productType },
     { key: "tags_like", value: prepareList(filterState.tags) },
@@ -34,12 +40,21 @@ const prepareQueryFilter = (filterState: FilterState) => {
 
 const Main = () => {
   const filterState = useAppSelector((s) => s.market.filter);
+  const [productCount, setProductCount] = useState<number>(0);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   useEffect(() => {
     const params = prepareQueryFilter(filterState);
     const fetchProducts = async () => {
-      const data = await productService.getProducts(params);
-      setFilteredProducts(data);
+      const response: Response = await productService.getProducts(params, {
+        fullResponse: true,
+      });
+      let products: Product[] = await response.json();
+      products = products.map((p, i) => ({
+        ...p,
+        image: `https://picsum.photos/90?random=${i}`,
+      }));
+      setProductCount(Number(response.headers.get("X-Total-Count")));
+      setFilteredProducts(products);
     };
     fetchProducts();
   }, [filterState]);
@@ -61,16 +76,10 @@ const Main = () => {
         <ProductTypes></ProductTypes>
         <ProductList>
           {filteredProducts.map((p) => (
-            <ProductItem
-              key={p.slug}
-              slug={p.slug}
-              imageUrl={p.image}
-              price={p.price}
-              name={p.name}
-              isAdded={false}
-            ></ProductItem>
+            <ProductItem key={p.slug} product={p}></ProductItem>
           ))}
         </ProductList>
+        <Pagination count={productCount}></Pagination>
       </ProductsWrapper>
     </MainWrapper>
   );

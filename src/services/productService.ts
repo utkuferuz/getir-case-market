@@ -6,7 +6,6 @@ const createProductFilterQuery = (selectedFilters: any[]): string => {
   let params = "";
   selectedFilters.forEach((item) => {
     if (item.value) {
-      console.log(item.value);
       let currentParam = "";
       currentParam = `${item.key}=${item.value}`;
       params = params ? `${params}&${currentParam}` : currentParam;
@@ -18,9 +17,9 @@ const createProductFilterQuery = (selectedFilters: any[]): string => {
 export const productService = {
   getBrands: () => httpHelper.get(`${API_URL}/brands`),
   getTags: () => httpHelper.get(`${API_URL}/tags`),
-  getProducts: (filters: any[] = []) => {
+  getProducts: (filters: any[] = [], options: any) => {
     const queryParams = createProductFilterQuery(filters);
-    return httpHelper.get(`${API_URL}/products?${queryParams}&`);
+    return httpHelper.get(`${API_URL}/products?${queryParams}&`, options);
   },
   getProductTypes: () => httpHelper.get(`${API_URL}/productTypes`),
 };

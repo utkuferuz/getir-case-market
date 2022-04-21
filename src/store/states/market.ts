@@ -2,11 +2,12 @@ import { FilterItem } from "../../components/main/filter/types";
 import { FilterState } from "./filter";
 import { Product } from "../../types/product";
 import { Status } from "../../types/status";
+import { Cart } from "./cart";
 
 export interface Market {
-  data: Product[];
-  status: Status;
-  filter: FilterState;
+  cart: Cart;
+  products: Product[];
+  productCount: number;
   productTypes: {
     data: FilterItem[];
     status: Status;
@@ -19,5 +20,6 @@ export interface Market {
     data: FilterItem[];
     status: Status;
   };
-  productCount: number;
+  status: Status;
+  filter: FilterState;
 }

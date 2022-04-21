@@ -1,14 +1,16 @@
 import "./App.scss";
+import Footer from "./components/footer";
 import Header from "./components/header";
 import Main from "./components/main";
 import { productService } from "./services/productService";
 import {
   updateBrands,
-  updateProducts,
+  updateProducsInd,
   updateProductTypes,
   updateTags,
 } from "./store/actions";
 import { useAppDispatch } from "./store/hooks";
+import { Status } from "./types/status";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -17,19 +19,22 @@ function App() {
     productService.getTags(),
     productService.getProductTypes(),
   ];
+  dispatch(() => updateProducsInd(Status.Loading));
   Promise.all(serviceCalls)
     .then((response) => {
-      const [brands, tags, productTypes, products] = response;
+      const [brands, tags, productTypes] = response;
       dispatch(updateTags(tags));
       dispatch(updateBrands(brands));
       dispatch(updateProductTypes(productTypes));
-      dispatch(updateProducts(products));
     })
-    .catch();
+    .finally(() => {
+      dispatch(() => updateProducsInd(Status.Loaded));
+    });
   return (
     <>
       <Header />
       <Main />
+      <Footer />
     </>
   );
 }

@@ -1,12 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
+  addCartItem,
+  removeCartItem,
   updateBrands,
-  updateBrandsInd,
   updateFilter,
+  updateProducsInd,
   updateProducts,
   updateProductTypes,
   updateTags,
-  updateTagsInd,
 } from "../actions";
 import { Market } from "../states/market";
 import { SortDirection } from "../../types/sortDirection";
@@ -14,7 +15,15 @@ import { Status } from "../../types/status";
 import { ProductType } from "../../types/productType";
 
 const initialState: Market = {
-  data: [],
+  cart: {
+    items: [],
+  },
+  products: [],
+  productCount: 0,
+  productTypes: {
+    data: [],
+    status: Status.Pending,
+  },
   status: Status.Pending,
   filter: {
     productType: ProductType.MUG,
@@ -26,10 +35,6 @@ const initialState: Market = {
       items: 16,
     },
   },
-  productTypes: {
-    data: [],
-    status: Status.Pending,
-  },
   brands: {
     data: [],
     status: Status.Pending,
@@ -38,7 +43,6 @@ const initialState: Market = {
     data: [],
     status: Status.Pending,
   },
-  productCount: 0,
 };
 
 const marketReducer = createReducer(initialState, (builder) => {
@@ -50,22 +54,45 @@ const marketReducer = createReducer(initialState, (builder) => {
       };
     })
     .addCase(updateProducts, (state, action) => {
-      state.data = action.payload;
+      state.products = action.payload;
+    })
+    .addCase(updateProducsInd, (state, action) => {
+      state.status = action.payload;
     })
     .addCase(updateTags, (state, action) => {
       state.tags.data = action.payload;
     })
-    .addCase(updateTagsInd, (state, action) => {
-      state.tags.status = action.payload;
-    })
     .addCase(updateBrands, (state, action) => {
       state.brands.data = action.payload;
     })
-    .addCase(updateBrandsInd, (state, action) => {
-      state.brands.status = action.payload;
-    })
     .addCase(updateProductTypes, (state, action) => {
       state.productTypes.data = action.payload;
+    })
+    .addCase(addCartItem, (state, action) => {
+      const addedProduct = action.payload;
+      const items = [...state.cart.items];
+      const item = items.find((c) => c.item.slug === addedProduct.slug);
+      if (item) {
+        item.count++;
+      } else {
+        items.push({ count: 1, item: addedProduct });
+      }
+      state.cart.items = items;
+    })
+    .addCase(removeCartItem, (state, action) => {
+      const addedProduct = action.payload;
+      const cartItems = [...state.cart.items];
+      const item = cartItems.find((c) => c.item.slug === addedProduct.slug);
+      if (item?.count === 1) {
+        const excludedList = cartItems.filter(
+          (i) => i.item.slug !== action.payload.slug
+        );
+        state.cart.items = excludedList;
+        return;
+      }
+      if (item) {
+        item.count--;
+      }
     });
 });
 
@@ -75,9 +102,9 @@ const market = {
     updateFilter,
     updateProducts,
     updateTags,
-    updateTagsInd,
     updateBrands,
-    updateBrandsInd,
+    addCartItem,
+    removeCartItem,
   },
 };
 
