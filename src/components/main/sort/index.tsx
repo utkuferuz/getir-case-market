@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { updateFilter } from "../../../store/actions";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { SortDirection } from "../../../types/sortDirection";
-import RadioDefaultIcon from "../../../styles/icons/radioDefault";
-import RadioSelectedIcon from "../../../styles/icons/radioSelected";
+import RadioDefaultIcon from "../../shared/icons/radioDefault";
+import RadioSelectedIcon from "../../shared/icons/radioSelected";
 
 type SortingOption = {
   key: SortDirection;
@@ -18,7 +18,7 @@ const sortingOptions: SortingOption[] = [
 ];
 
 const Sort = () => {
-  const sortState = useAppSelector((state) => state.market.filter.sortBy);
+  const sortState = useAppSelector((s) => s.market.filter.sortBy);
   const dispatch = useAppDispatch();
   const onSortChanged = (direction: SortDirection) =>
     dispatch(updateFilter({ sortBy: direction }));

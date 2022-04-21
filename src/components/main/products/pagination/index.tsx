@@ -2,9 +2,9 @@ import ReactPaginate from "react-paginate";
 import styled from "styled-components";
 import { updateFilter } from "../../../../store/actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import ArrowLeft from "../../../../styles/icons/arrowLeft";
-import ArrowRight from "../../../../styles/icons/arrowRight";
-import Dots from "../../../../styles/icons/dots";
+import ArrowLeft from "../../../shared/icons/arrowLeft";
+import ArrowRight from "../../../shared/icons/arrowRight";
+import Dots from "../../../shared/icons/dots";
 import { theme } from "../../../../styles/variables";
 
 type Props = {

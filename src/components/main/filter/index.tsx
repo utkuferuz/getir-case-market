@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { updateFilter } from "../../../store/actions";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import CheckBoxDefault from "../../../styles/icons/checkBoxDefault";
-import CheckBoxSelected from "../../../styles/icons/checkBoxSelected";
+import CheckBoxDefault from "../../shared/icons/checkBoxDefault";
+import CheckBoxSelected from "../../shared/icons/checkBoxSelected";
 import { theme } from "../../../styles/variables";
 import Input from "../../shared/input/input";
 import { FilterItem, filterTypes } from "./types";
+import { Status } from "../../../types/status";
+import ClipLoader from "react-spinners/ClipLoader";
 
 type Props = {
   defaultOptions: FilterItem[];
@@ -27,9 +29,12 @@ const updateCheckedItems = (
 
 const Filter = ({ type, defaultOptions }: Props) => {
   const dispatch = useAppDispatch();
-  const filterOptions = useAppSelector((s) => s.market[type].data);
+  const filterOptions = useAppSelector<FilterItem[]>(
+    (s) => s.market[type].data
+  );
   const checkedOptions = useAppSelector((s) => s.market.filter[type]);
-  const [options, setOptions] = useState(filterOptions);
+  const loadingStatus = useAppSelector<Status>((s) => s.market.status);
+  const [options, setOptions] = useState<FilterItem[]>(filterOptions);
   const filter = filterTypes.find((o) => o.type === type);
   const onItemClicked = (item: FilterItem) => {
     const temp = checkedOptions ? [...checkedOptions] : [];
@@ -47,10 +52,9 @@ const Filter = ({ type, defaultOptions }: Props) => {
         <CheckBoxDefault />
       )}
       <FilterName className="item-name">{item.name}</FilterName>
-      <ProductCount className="item-count">(4)</ProductCount>
+      {/* <ProductCount className="item-count">(4)</ProductCount> */}
     </FilterListItem>
   ));
-
   useEffect(() => setOptions(filterOptions), [filterOptions]);
   return (
     <FilterWrapper>
@@ -66,7 +70,16 @@ const Filter = ({ type, defaultOptions }: Props) => {
             )
           }
         ></Input>
-        <FilterList>{listItems}</FilterList>
+        {loadingStatus === Status.Loading ? (
+          <ClipLoader
+            css="margin-left: 65px;margin-top: 20px;"
+            color={theme.color.primary}
+            loading={true}
+            size={100}
+          ></ClipLoader>
+        ) : (
+          <FilterList>{listItems}</FilterList>
+        )}
       </FilterContainer>
     </FilterWrapper>
   );

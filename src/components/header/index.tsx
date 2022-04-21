@@ -3,6 +3,7 @@ import Logo from "./logo";
 import styled from "styled-components";
 import { theme } from "../../styles/variables";
 import Container from "../shared/container";
+import BarLoader from "react-spinners/BarLoader";
 
 const Header = () => {
   return (

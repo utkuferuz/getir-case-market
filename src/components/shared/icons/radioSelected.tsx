@@ -1,4 +1,4 @@
-import { theme } from "../variables";
+import { theme } from "../../../styles/variables";
 
 const RadioSelected = () => {
   return (
