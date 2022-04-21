@@ -1,6 +1,7 @@
 export type FilterItem = {
   id: string;
   name: string;
+  productCount?: number;
 };
 
 export const filterTypes = [

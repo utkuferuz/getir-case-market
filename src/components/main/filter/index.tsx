@@ -36,6 +36,14 @@ const Filter = ({ type, defaultOptions }: Props) => {
   const loadingStatus = useAppSelector<Status>((s) => s.market.status);
   const [options, setOptions] = useState<FilterItem[]>(filterOptions);
   const filter = filterTypes.find((o) => o.type === type);
+  const productCount = filterOptions.reduce(
+    (total, next) => total + (next.productCount || 0),
+    0
+  );
+  const defaultOption = defaultOptions.find((o) => o.id === "all");
+  if (defaultOption) {
+    defaultOption.productCount = productCount;
+  }
   const onItemClicked = (item: FilterItem) => {
     const temp = checkedOptions ? [...checkedOptions] : [];
     const refreshedItems = updateCheckedItems(temp, item);
@@ -52,7 +60,7 @@ const Filter = ({ type, defaultOptions }: Props) => {
         <CheckBoxDefault />
       )}
       <FilterName className="item-name">{item.name}</FilterName>
-      {/* <ProductCount className="item-count">(4)</ProductCount> */}
+      <ProductCount className="item-count">({item.productCount})</ProductCount>
     </FilterListItem>
   ));
   useEffect(() => setOptions(filterOptions), [filterOptions]);

@@ -15,11 +15,14 @@ const createProductFilterQuery = (selectedFilters: any[]): string => {
 };
 
 export const productService = {
-  getBrands: () => httpHelper.get(`${API_URL}/brands`),
-  getTags: () => httpHelper.get(`${API_URL}/tags`),
+  getBrands: () => httpHelper.get(`${API_URL}/market?list=brand`),
+  getTags: () => httpHelper.get(`${API_URL}/market?list=tag`),
   getProducts: (filters: any[] = [], options: any) => {
     const queryParams = createProductFilterQuery(filters);
-    return httpHelper.get(`${API_URL}/products?${queryParams}&`, options);
+    return httpHelper.get(
+      `${API_URL}/market?list=product&${queryParams}&`,
+      options
+    );
   },
-  getProductTypes: () => httpHelper.get(`${API_URL}/productTypes`),
+  getProductTypes: () => httpHelper.get(`${API_URL}/market?list=productType`),
 };
