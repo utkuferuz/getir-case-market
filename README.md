@@ -1,6 +1,6 @@
-# Getir-Market-Fe
+# Getir-Case-Market
 
-Getir-Market-FE is an online store application developed by React.
+Getir-Case-Market is an online store application developed by React.
 
 # Folder Structure
 
@@ -14,18 +14,17 @@ Getir-Market-FE is an online store application developed by React.
 
 # Used technologies
 
-- This project was creating using [Create React App](https://github.com/facebook/create-react-app).  
-- [Redux] (https://redux.js.org/) State management library in order to manage. 
-- [react-paginate] (https://www.npmjs.com/package/react-paginate) Pagination component for product list.  
-- [react=spinners] (https://www.npmjs.com/package/react-spinners) Spinner component for loading states during http requests.  
-- [react-tiny-popover] (https://www.npmjs.com/package/react-tiny-popover) Popover for shopping cart. 
-for shopping cart.  
+- [Create React App](https://github.com/facebook/create-react-app) is used to create the react app.  
+- [Redux](https://redux.js.org/) State management library in order to manage. 
+- [react-paginate](https://www.npmjs.com/package/react-paginate) Pagination component for product list.  
+- [react-pinners](https://www.npmjs.com/package/react-spinners) Spinner component for loading states during http requests.  
+- [react-tiny-popover](https://www.npmjs.com/package/react-tiny-popover) Popover for shopping cart. 
 - [json-server](https://github.com/typicode/json-server) BE service that provides JSON response. 
 
 # Deployment
 
-- API [market-be] (https://market-be.herokuapp.com)
-- Front-END [market-fe] (https://market-react-fe.herokuapp.com/)
+- API [market-be](https://market-be.herokuapp.com)
+- Front-END [market-fe](https://market-react-fe.herokuapp.com/)
 
 ### `npm start`
 
