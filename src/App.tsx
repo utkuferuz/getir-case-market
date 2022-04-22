@@ -5,9 +5,10 @@ import Main from "./components/main";
 import { productService } from "./services/productService";
 import {
   updateBrands,
-  updateProducsInd,
-  updateProductTypes,
+  updateBrandsInd,
   updateTags,
+  updateTagsInd,
+  updateProductTypes,
 } from "./store/actions";
 import { useAppDispatch } from "./store/hooks";
 import { Status } from "./types/status";
@@ -19,7 +20,6 @@ function App() {
     productService.getTags(),
     productService.getProductTypes(),
   ];
-  dispatch(() => updateProducsInd(Status.Loading));
   Promise.all(serviceCalls)
     .then((response) => {
       const [brands, tags, productTypes] = response;
@@ -28,7 +28,10 @@ function App() {
       dispatch(updateProductTypes(productTypes));
     })
     .finally(() => {
-      dispatch(() => updateProducsInd(Status.Loaded));
+      setTimeout(() => {
+        dispatch(updateTagsInd(Status.Loaded));
+        dispatch(updateBrandsInd(Status.Loaded));
+      }, 1500);
     });
   return (
     <>

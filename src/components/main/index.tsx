@@ -20,19 +20,17 @@ const prepareQueryFilter = (filterState: FilterState) => {
   };
   const [sort, order] = filterState.sortBy ? filterState.sortBy.split("_") : [];
   return [
-    { key: "_sort", value: sort },
-    { key: "_order", value: order },
+    { key: "sort", value: sort },
+    { key: "order", value: order },
     {
-      key: "_start",
-      value:
-        (filterState.pagination?.index || 0) *
-        (filterState.pagination?.items || 16),
+      key: "start",
+      value: filterState.pagination?.index || 0,
     },
-    { key: "_limit", value: filterState.pagination?.items },
-    { key: "itemType_like", value: filterState.productType },
-    { key: "tags_like", value: prepareList(filterState.tags) },
+    { key: "limit", value: filterState.pagination?.items || 16 },
+    { key: "itemType", value: filterState.productType },
+    { key: "tags", value: prepareList(filterState.tags) },
     {
-      key: "manufacturer_like",
+      key: "brands",
       value: prepareList(filterState.brands),
     },
   ];
@@ -45,15 +43,15 @@ const Main = () => {
   useEffect(() => {
     const params = prepareQueryFilter(filterState);
     const fetchProducts = async () => {
-      const response: Response = await productService.getProducts(params, {
-        fullResponse: true,
-      });
-      let products: Product[] = await response.json();
+      const response = await productService.getProducts(params);
+      let totalCount = response.totalCount;
+      let products: Product[] = response.products;
       products = products.map((p, i) => ({
         ...p,
+        date: p.added,
         image: `https://picsum.photos/90?random=${i}`,
       }));
-      setProductCount(Number(response.headers.get("X-Total-Count")));
+      setProductCount(Number(totalCount));
       setFilteredProducts(products);
     };
     fetchProducts();
@@ -74,12 +72,16 @@ const Main = () => {
       <ProductsWrapper>
         <Title>Products</Title>
         <ProductTypes></ProductTypes>
-        <ProductList>
-          {filteredProducts.map((p) => (
-            <ProductItem key={p.slug} product={p}></ProductItem>
-          ))}
-        </ProductList>
-        <Pagination count={productCount}></Pagination>
+        {filteredProducts.length > 0 && (
+          <ProductList>
+            {filteredProducts.map((p) => (
+              <ProductItem key={p.slug} product={p}></ProductItem>
+            ))}
+          </ProductList>
+        )}
+        {filteredProducts.length > 0 && (
+          <Pagination count={productCount}></Pagination>
+        )}
       </ProductsWrapper>
     </MainWrapper>
   );

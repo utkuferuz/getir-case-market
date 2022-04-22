@@ -33,7 +33,7 @@ const Filter = ({ type, defaultOptions }: Props) => {
     (s) => s.market[type].data
   );
   const checkedOptions = useAppSelector((s) => s.market.filter[type]);
-  const loadingStatus = useAppSelector<Status>((s) => s.market.status);
+  const loadingStatus = useAppSelector<Status>((s) => s.market[type].status);
   const [options, setOptions] = useState<FilterItem[]>(filterOptions);
   const filter = filterTypes.find((o) => o.type === type);
   const productCount = filterOptions.reduce(
@@ -49,6 +49,7 @@ const Filter = ({ type, defaultOptions }: Props) => {
     const refreshedItems = updateCheckedItems(temp, item);
     let tempFilter: any = {};
     tempFilter[type] = refreshedItems;
+    // tempFilter.pagination = { index: 0, items: 16 };
     dispatch(updateFilter(tempFilter));
   };
   const items = [...defaultOptions, ...options];

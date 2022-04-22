@@ -31,7 +31,7 @@ const Basket = () => {
   );
   return (
     <Popover
-      isOpen={isPopoverOpen}
+      isOpen={isPopoverOpen && cartState.items.length > 0}
       padding={40}
       positions={["bottom"]}
       content={basketItems}

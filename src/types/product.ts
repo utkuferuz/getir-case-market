@@ -5,5 +5,7 @@ export interface Product {
   tags: string[];
   slug: string;
   itemType: string;
+  date: number;
+  added: number;
   manufacturer: string;
 }

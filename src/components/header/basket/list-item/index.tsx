@@ -13,7 +13,7 @@ type Props = {
 const BasketListItem = ({ product }: Props) => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((s) => s.market.cart.items);
-  const itemCount = cartItems.find((i) => i.item.slug == product.slug)?.count;
+  const itemCount = cartItems.find((i) => i.item.slug === product.slug)?.count;
   const localizedPrice = new Intl.NumberFormat("tr", {
     maximumFractionDigits: 2,
   }).format(product.price);

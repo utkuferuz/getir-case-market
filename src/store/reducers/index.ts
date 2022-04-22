@@ -4,10 +4,12 @@ import {
   removeCartItem,
   updateBrands,
   updateFilter,
-  updateProducsInd,
+  updateProductsInd,
   updateProducts,
   updateProductTypes,
   updateTags,
+  updateTagsInd,
+  updateBrandsInd,
 } from "../actions";
 import { Market } from "../states/market";
 import { SortDirection } from "../../types/sortDirection";
@@ -22,9 +24,9 @@ const initialState: Market = {
   productCount: 0,
   productTypes: {
     data: [],
-    status: Status.Pending,
+    status: Status.Loading,
   },
-  status: Status.Pending,
+  status: Status.Loading,
   filter: {
     productType: ProductType.MUG,
     brands: [],
@@ -37,11 +39,11 @@ const initialState: Market = {
   },
   brands: {
     data: [],
-    status: Status.Pending,
+    status: Status.Loading,
   },
   tags: {
     data: [],
-    status: Status.Pending,
+    status: Status.Loading,
   },
 };
 
@@ -56,8 +58,14 @@ const marketReducer = createReducer(initialState, (builder) => {
     .addCase(updateProducts, (state, action) => {
       state.products = action.payload;
     })
-    .addCase(updateProducsInd, (state, action) => {
+    .addCase(updateProductsInd, (state, action) => {
       state.status = action.payload;
+    })
+    .addCase(updateTagsInd, (state, action) => {
+      state.tags.status = action.payload;
+    })
+    .addCase(updateBrandsInd, (state, action) => {
+      state.brands.status = action.payload;
     })
     .addCase(updateTags, (state, action) => {
       state.tags.data = action.payload;
@@ -101,8 +109,11 @@ const market = {
   actions: {
     updateFilter,
     updateProducts,
+    updateProductsInd,
     updateTags,
+    updateTagsInd,
     updateBrands,
+    updateBrandsInd,
     addCartItem,
     removeCartItem,
   },
